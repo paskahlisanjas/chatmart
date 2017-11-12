@@ -79,7 +79,6 @@ public class MainActivity extends AppCompatActivity {
             chats.add(new ChatEntity(ChatEntity.LIST_OF_CATEGORY, null, null, categories));
         } else if (input.equals(SHIPMENT)) {
             chats.add(addIntoChats(SHIPMENT, false));
-
             chats.add(new ChatEntity(ChatEntity.LIST_OF_SHIPMENT, null, products, null));
         } else if ((input.length()>5)&&(input.substring(0,4).equals(CARI))) {
             if(input.equals(CARI_INDOMIE)){
@@ -96,7 +95,6 @@ public class MainActivity extends AppCompatActivity {
                 chats.add(addIntoChats(input, false));
                 chats.add(addIntoChats(WRONG_MESSAGE, true));
         }
-
 
         chatAdapter.notifyDataSetChanged();
 

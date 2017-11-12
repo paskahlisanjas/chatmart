@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:layout_marginBottom="10dp">
+    android:layout_marginBottom="10dp"
+    android:orientation="vertical">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/message_in_container"
@@ -50,28 +50,31 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:maxWidth="300dp"
         android:visibility="gone">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/chat_bubble_in"
-            android:maxWidth="300dp"
             android:orientation="vertical"
             android:padding="16dp"
             android:paddingStart="30dp"
             android:textColor="#FFF">
-                <ListView
-                    android:id="@+id/list_of_product"
-                    android:layout_width="300dp"
-                    android:layout_height="130dp" />
+
+            <ListView
+                android:id="@+id/list_of_product"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"/>
+
             <Button
+                android:id="@+id/see_more_button_product"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:backgroundTint="@color/colorPrimary"
                 android:text="see more"
-                android:id="@+id/see_more_button_product"
                 android:textColor="#FFF" />
         </LinearLayout>
     </LinearLayout>
@@ -80,11 +83,12 @@
         android:id="@+id/cart_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:maxWidth="300dp"
         android:orientation="vertical"
         android:visibility="gone">
 
         <LinearLayout
-            android:layout_width="380dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/chat_bubble_in"
             android:orientation="vertical"
@@ -94,7 +98,7 @@
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/item_list_cart"
-                android:layout_width="350dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
             <TextView
@@ -103,16 +107,17 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:layout_marginTop="10dp"
-                android:text="Total : Rp " />
+                android:text="Total : Rp "
+                android:textStyle="bold"/>
 
             <Button
+                android:id="@+id/check_out_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="10dp"
-                android:background="@color/colorPrimary"
+                android:backgroundTint="@color/colorPrimary"
                 android:text="check out"
-                android:id="@+id/check_out_button"
                 android:textColor="#FFF" />
         </LinearLayout>
     </LinearLayout>
@@ -202,11 +207,11 @@
         android:id="@+id/category_list_view_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:background="@drawable/chat_bubble_in"
+        android:orientation="vertical"
         android:padding="16dp"
-        android:visibility="gone"
-        android:paddingStart="30dp">
+        android:paddingStart="30dp"
+        android:visibility="gone">
 
         <ListView
             android:id="@+id/category_list_view"
@@ -218,9 +223,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="see more"
             android:backgroundTint="@color/colorPrimary"
-            android:textColor="#FFF"/>
+            android:text="see more"
+            android:textColor="#FFF" />
 
     </LinearLayout>
 
@@ -228,9 +233,9 @@
         android:id="@+id/shipment_list_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/chat_bubble_in"
         android:orientation="vertical"
         android:padding="16dp"
-        android:background="@drawable/chat_bubble_in"
         android:paddingStart="30dp"
         android:visibility="gone">
 
@@ -245,8 +250,8 @@
         android:id="@+id/shipment_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="300dp"
@@ -265,9 +270,9 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_marginEnd="10dp"
-                    android:src="@drawable/indomie"
+                    android:background="@drawable/soft_edge_box"
                     android:padding="5dp"
-                    android:background="@drawable/soft_edge_box"/>
+                    android:src="@drawable/indomie" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
