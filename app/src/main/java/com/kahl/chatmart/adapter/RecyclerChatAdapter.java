@@ -6,10 +6,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.kahl.chatmart.R;
 import com.kahl.chatmart.entity.ChatEntity;
@@ -47,6 +49,30 @@ public class RecyclerChatAdapter extends RecyclerView.Adapter<RecyclerChatAdapte
             case ChatEntity.DEFAULT_OUT:
                 holder.messageOutContainer.setVisibility(View.VISIBLE);
                 holder.messageOutContent.setText(chat.getMessage());
+                break;
+            case ChatEntity.LIST_OF_CATEGORY:
+                holder.categoryListContainer.setVisibility(View.VISIBLE);
+                holder.categoryList.setAdapter(new CategoryListViewAdapter(context, chat.getCategoryList()));
+                holder.seeMoreButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(context, "Button clicked", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            case ChatEntity.LIST_OF_SHIPMENT:
+                holder.shipmentListContainer.setVisibility(View.VISIBLE);
+                holder.shipmentList.setAdapter(new ShipmentListViewAdapter(context,
+                        chat.getProductList()));
+                holder.shipmentList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        chatEntityList.add(new ChatEntity(ChatEntity.PRODUCT_SHIPMENT_STATUS, null, null, null));
+                        notifyDataSetChanged();
+                    }
+                });
+                break;
+            case ChatEntity.PRODUCT_SHIPMENT_STATUS:
+                holder.shipmentContainer.setVisibility(View.VISIBLE);
                 break;
             case ChatEntity.CART:
                 holder.cartContainer.setVisibility(View.VISIBLE);

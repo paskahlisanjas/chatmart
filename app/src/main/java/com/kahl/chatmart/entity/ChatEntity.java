@@ -1,14 +1,8 @@
 package com.kahl.chatmart.entity;
 
-import android.content.Context;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.view.View;
 
-import com.kahl.chatmart.ChatInFragment;
-import com.kahl.chatmart.ChatOutFragment;
-import com.kahl.chatmart.R;
-
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,8 +22,13 @@ public class ChatEntity {
     private int type;
 
     private String message;
+    private List<Product> productList = new ArrayList<>();
+    private List<Category> categoryList = new ArrayList<>();
 
-    public ChatEntity(int chatCategory, @Nullable String contentText) {
+    public ChatEntity(int chatCategory,
+                      @Nullable String contentText,
+                      @Nullable List<Product> products,
+                      @Nullable List<Category> categories) {
         switch (chatCategory) {
             case DEFAULT_IN:
                 message = contentText;
@@ -50,9 +49,11 @@ public class ChatEntity {
                 break;
             case LIST_OF_CATEGORY:
                 type = LIST_OF_CATEGORY;
+                categoryList.addAll(categories);
                 break;
             case LIST_OF_SHIPMENT:
                 type = LIST_OF_SHIPMENT;
+                productList.addAll(products);
                 break;
             case PRODUCT_SHIPMENT_STATUS:
                 type = PRODUCT_SHIPMENT_STATUS;
@@ -66,5 +67,13 @@ public class ChatEntity {
 
     public String getMessage() {
         return message;
+    }
+
+    public List<Product> getProductList() {
+        return productList;
+    }
+
+    public List<Category> getCategoryList() {
+        return categoryList;
     }
 }

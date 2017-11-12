@@ -205,7 +205,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:background="@drawable/chat_bubble_in"
+        android:padding="16dp"
+        android:visibility="gone"
+        android:paddingStart="30dp">
 
         <ListView
             android:id="@+id/category_list_view"
@@ -219,6 +222,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:padding="16dp"
+        android:background="@drawable/chat_bubble_in"
+        android:paddingStart="30dp"
         android:visibility="gone">
 
         <ListView
@@ -252,7 +258,9 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_marginEnd="10dp"
-                    android:src="@drawable/indomie" />
+                    android:src="@drawable/indomie"
+                    android:padding="5dp"
+                    android:background="@drawable/soft_edge_box"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
