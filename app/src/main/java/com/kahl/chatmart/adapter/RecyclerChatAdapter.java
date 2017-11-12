@@ -2,7 +2,6 @@ package com.kahl.chatmart.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,12 +52,13 @@ public class RecyclerChatAdapter extends RecyclerView.Adapter<RecyclerChatAdapte
             case ChatEntity.LIST_OF_CATEGORY:
                 holder.categoryListContainer.setVisibility(View.VISIBLE);
                 holder.categoryList.setAdapter(new CategoryListViewAdapter(context, chat.getCategoryList()));
-                holder.seeMoreButton.setOnClickListener(new View.OnClickListener() {
+                holder.seeMoreButtonCategory.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Toast.makeText(context, "Button clicked", Toast.LENGTH_SHORT).show();
                     }
                 });
+                break;
             case ChatEntity.LIST_OF_SHIPMENT:
                 holder.shipmentListContainer.setVisibility(View.VISIBLE);
                 holder.shipmentList.setAdapter(new ShipmentListViewAdapter(context,
@@ -94,7 +94,7 @@ public class RecyclerChatAdapter extends RecyclerView.Adapter<RecyclerChatAdapte
 
         protected LinearLayout productListContainer;
         protected ListView productList;
-        protected Button seeMoreButton;
+        protected Button seeMoreButtonProduct;
 
         protected LinearLayout cartContainer;
         protected RecyclerView cartList;
@@ -106,6 +106,7 @@ public class RecyclerChatAdapter extends RecyclerView.Adapter<RecyclerChatAdapte
 
         protected LinearLayout categoryListContainer;
         protected ListView categoryList;
+        protected Button seeMoreButtonCategory;
 
         protected LinearLayout shipmentListContainer;
         protected ListView shipmentList;
@@ -123,7 +124,7 @@ public class RecyclerChatAdapter extends RecyclerView.Adapter<RecyclerChatAdapte
 
             productListContainer = (LinearLayout) view.findViewById(R.id.list_of_product_container);
             productList = (ListView) view.findViewById(R.id.list_of_product);
-            seeMoreButton = (Button) view.findViewById(R.id.see_more_button);
+            seeMoreButtonProduct = (Button) view.findViewById(R.id.see_more_button_product);
 
             cartContainer = (LinearLayout) view.findViewById(R.id.cart_container);
             cartList = (RecyclerView) view.findViewById(R.id.item_list_cart);
@@ -135,6 +136,7 @@ public class RecyclerChatAdapter extends RecyclerView.Adapter<RecyclerChatAdapte
 
             categoryListContainer = (LinearLayout) view.findViewById(R.id.category_list_view_container);
             categoryList = (ListView) view.findViewById(R.id.category_list_view);
+            seeMoreButtonCategory = (Button) view.findViewById(R.id.see_more_button_category);
 
             shipmentListContainer = (LinearLayout) view.findViewById(R.id.shipment_list_container);
             shipmentList = (ListView) view.findViewById(R.id.shipment_list_view);

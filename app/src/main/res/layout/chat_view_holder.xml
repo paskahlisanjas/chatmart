@@ -73,7 +73,7 @@
                 android:layout_gravity="center_horizontal"
                 android:backgroundTint="@color/colorPrimary"
                 android:text="see more"
-                android:id="@+id/see_more_button"
+                android:id="@+id/see_more_button_product"
                 android:textColor="#FFF" />
         </LinearLayout>
     </LinearLayout>
@@ -213,7 +213,16 @@
         <ListView
             android:id="@+id/category_list_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="260dp" />
+
+        <Button
+            android:id="@+id/see_more_button_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="see more"
+            android:backgroundTint="@color/colorPrimary"
+            android:textColor="#FFF"/>
 
     </LinearLayout>
 
