@@ -22,14 +22,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    RecyclerView chatList;
-    EditText editTextInput;
-    FloatingActionButton fabSend;
-    List<Product> products = new ArrayList<>();
+    private static RecyclerView chatList;
+    private EditText editTextInput;
+    private FloatingActionButton fabSend;
+    private List<Product> products = new ArrayList<>();
 
-    List<ChatEntity> chats = new ArrayList<>();
+    private static List<ChatEntity> chats = new ArrayList<>();
 
-    RecyclerChatAdapter chatAdapter;
+    private static RecyclerChatAdapter chatAdapter;
+
     private final String WRONG_MESSAGE = "Tolong bantu kami memahami permintaan Anda dengan memperjelas permintaan Anda.";
     private final String HALO = "Halo";
     private final String OPENING_RESP = "Ada yang dapat kami bantu?";
@@ -44,7 +45,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        products.add(new Product(getResources().getDrawable(R.drawable.indomie), "Indomie Goreng", "Mie instan enak","100.000"));
         bindObject();
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
@@ -82,6 +82,8 @@ public class MainActivity extends AppCompatActivity {
             chats.add(new ChatEntity(ChatEntity.LIST_OF_SHIPMENT, null, products, null));
         } else if ((input.length()>5)&&(input.substring(0,4).equals(CARI))) {
             if(input.equals(CARI_INDOMIE)){
+                products.add(new Product(getResources().getDrawable(R.drawable.indomie), "Indomie Goreng", "Mie instan enak","100.000"));
+                products.add(new Product(getResources().getDrawable(R.drawable.indomie), "Indomie Goreng Direbus", "Mie instan lezat","120.000"));
                 chats.add(addIntoChats(CARI_INDOMIE, false));
                 chats.add(new ChatEntity(ChatEntity.LIST_OF_PRODUCT, null, products, null));
             } else{
@@ -124,5 +126,12 @@ public class MainActivity extends AppCompatActivity {
                 runLogic();
             }
         });
+    }
+    
+    public static void addToChatList(ChatEntity chatEntity) {
+        chats.add(chatEntity);
+        chatAdapter.notifyDataSetChanged();
+        int totalItem = chatList.getAdapter().getItemCount();
+        chatList.smoothScrollToPosition(totalItem - 1);
     }
 }

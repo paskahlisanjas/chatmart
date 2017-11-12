@@ -24,7 +24,7 @@
                 android:id="@android:id/tabs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#FF9800"/>
+                android:background="#FF9800" />
 
             <FrameLayout
                 android:id="@android:id/tabcontent"
@@ -35,7 +35,9 @@
                     android:id="@+id/Description"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"

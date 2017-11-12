@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,9 +16,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kahl.chatmart.ItemActivity;
+import com.kahl.chatmart.MainActivity;
 import com.kahl.chatmart.R;
 import com.kahl.chatmart.entity.ChatEntity;
+import com.kahl.chatmart.entity.Product;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,10 +37,19 @@ public class RecyclerChatAdapter extends RecyclerView.Adapter<RecyclerChatAdapte
         this.chatEntityList = chatEntityList;
     }
 
+    public List<ChatEntity> getData() {
+        return chatEntityList;
+    }
+
     @Override
     public ChatHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.chat_view_holder, parent, false);
         return new ChatHolder(view);
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
     }
 
     @Override
@@ -61,6 +74,15 @@ public class RecyclerChatAdapter extends RecyclerView.Adapter<RecyclerChatAdapte
                         Toast.makeText(context, "Button clicked", Toast.LENGTH_SHORT).show();
                     }
                 });
+                holder.categoryList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        List<Product> products = new ArrayList<>();
+                        products.add(new Product(context.getResources().getDrawable(R.drawable.indomie), "Indomie Goreng", "Mie instan enak","100.000"));
+                        products.add(new Product(context.getResources().getDrawable(R.drawable.indomie), "Indomie Goreng Direbus", "Mie instan lezat","120.000"));
+                        MainActivity.addToChatList(new ChatEntity(ChatEntity.LIST_OF_PRODUCT, null, products, null));
+                    }
+                });
                 break;
             case ChatEntity.LIST_OF_SHIPMENT:
                 holder.shipmentListContainer.setVisibility(View.VISIBLE);
@@ -69,8 +91,7 @@ public class RecyclerChatAdapter extends RecyclerView.Adapter<RecyclerChatAdapte
                 holder.shipmentList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        chatEntityList.add(new ChatEntity(ChatEntity.PRODUCT_SHIPMENT_STATUS, null, null, null));
-                        notifyDataSetChanged();
+                        MainActivity.addToChatList(new ChatEntity(ChatEntity.PRODUCT_SHIPMENT_STATUS, null, null, null));
                     }
                 });
                 break;
@@ -78,22 +99,40 @@ public class RecyclerChatAdapter extends RecyclerView.Adapter<RecyclerChatAdapte
                 holder.shipmentContainer.setVisibility(View.VISIBLE);
                 break;
             case ChatEntity.CART:
-                holder.cartContainer.setVisibility(View.VISIBLE);
-                holder.totalPrice.setText("Total : Rp "+chat.getProductList().get(0).getPrice());
-                holder.cartList.setAdapter(new CartListViewAdapter(context,chat.getProductList()));
-                LinearLayoutManager llm = new LinearLayoutManager(context);
-                llm.setOrientation(LinearLayoutManager.VERTICAL);
-                holder.cartList.setLayoutManager(llm);
-                holder.checkOutButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        chatEntityList.add(new ChatEntity(ChatEntity.PAYMENT_METHOD, null, null, null));
-                        notifyDataSetChanged();
-                    }
-                });
+                Log.d("CHATMART", "chat.getProductList().size() = " + chat.getProductList().size());
+                if (chat.getProductList().size() == 0) {
+                    MainActivity.addToChatList(new ChatEntity(ChatEntity.DEFAULT_IN, "Keranjang Anda kosong", null, null));
+                } else {
+                    holder.cartContainer.setVisibility(View.VISIBLE);
+                    holder.totalPrice.setText("Total : Rp " + chat.getProductList().get(0).getPrice());
+                    holder.cartList.setAdapter(new CartListViewAdapter(context, chat.getProductList()));
+                    LinearLayoutManager llm = new LinearLayoutManager(context);
+                    llm.setOrientation(LinearLayoutManager.VERTICAL);
+                    holder.cartList.setLayoutManager(llm);
+                    holder.checkOutButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            MainActivity.addToChatList(new ChatEntity(ChatEntity.PAYMENT_METHOD, null, null, null));
+                        }
+                    });
+                }
                 break;
             case ChatEntity.PAYMENT_METHOD:
                 holder.paymentMethodContainer.setVisibility(View.VISIBLE);
+                holder.chooseCreditCardButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        MainActivity.addToChatList(new ChatEntity(ChatEntity.DEFAULT_IN, "Pembayaran berhasil!", null, null));
+                    }
+                });
+                holder.chooseTransferBankButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        MainActivity.addToChatList(new ChatEntity(ChatEntity.DEFAULT_IN, "Silakan lakukan pembayaran ke " +
+                                "14045 (BCA) atas nama PT. Chatmart Nusantara dengan nominal Rp 221.352,00. Pembayaran akan otomatis +" +
+                                "terverifikasi oleh sistem saat transaksi transfer anda berhasil.", null, null));
+                    }
+                });
                 break;
             case ChatEntity.LIST_OF_PRODUCT:
                 holder.productListContainer.setVisibility(View.VISIBLE);
