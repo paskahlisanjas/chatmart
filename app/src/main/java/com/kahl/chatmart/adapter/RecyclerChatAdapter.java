@@ -1,6 +1,7 @@
 package com.kahl.chatmart.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.kahl.chatmart.ItemActivity;
 import com.kahl.chatmart.R;
 import com.kahl.chatmart.entity.ChatEntity;
 
@@ -87,7 +89,6 @@ public class RecyclerChatAdapter extends RecyclerView.Adapter<RecyclerChatAdapte
                     public void onClick(View v) {
                         chatEntityList.add(new ChatEntity(ChatEntity.PAYMENT_METHOD, null, null, null));
                         notifyDataSetChanged();
-
                     }
                 });
                 break;
@@ -97,6 +98,12 @@ public class RecyclerChatAdapter extends RecyclerView.Adapter<RecyclerChatAdapte
             case ChatEntity.LIST_OF_PRODUCT:
                 holder.productListContainer.setVisibility(View.VISIBLE);
                 holder.productList.setAdapter(new ProductListViewAdapter(context, chat.getProductList()));
+                holder.seeMoreButtonProduct.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        context.startActivity(new Intent(context, ItemActivity.class));
+                    }
+                });
                 break;
         }
     }
