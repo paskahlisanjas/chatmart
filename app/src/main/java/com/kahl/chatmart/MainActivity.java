@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private final String CARI = "Cari";
     private final String CARI_INDOMIE = "Cari Indomie";
     private final String ITEM_NOT_FOUND = "Barang tidak ditemukan";
+    private final String KERANJANG = "Lihat keranjang";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,10 +89,14 @@ public class MainActivity extends AppCompatActivity {
                 chats.add(addIntoChats(input, false));
                 chats.add(addIntoChats(ITEM_NOT_FOUND, true));
             }
-        } else {
-            chats.add(addIntoChats(input, false));
-            chats.add(addIntoChats(WRONG_MESSAGE, true));
+        } else if (input.equals(KERANJANG)){
+            chats.add(addIntoChats(KERANJANG, false));
+            chats.add(new ChatEntity(ChatEntity.CART, null, products, null));
+        }else {
+                chats.add(addIntoChats(input, false));
+                chats.add(addIntoChats(WRONG_MESSAGE, true));
         }
+
 
         chatAdapter.notifyDataSetChanged();
 
@@ -105,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void bindObject() {
-        chats.add(addIntoChats("Hi, Smitty", true));
+        chats.add(addIntoChats("Hi, Smitty Werbenjagermanjensen", true));
         chatAdapter = new RecyclerChatAdapter(this, chats);
 
         chatList = (RecyclerView) findViewById(R.id.list_view_chats);

@@ -1,6 +1,7 @@
 package com.kahl.chatmart.adapter;
 
 import android.content.Context;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,10 +16,7 @@ import android.widget.Toast;
 import com.kahl.chatmart.R;
 import com.kahl.chatmart.entity.ChatEntity;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Paskahlis Anjas Prabowo on 10/11/2017.
@@ -79,6 +77,22 @@ public class RecyclerChatAdapter extends RecyclerView.Adapter<RecyclerChatAdapte
                 break;
             case ChatEntity.CART:
                 holder.cartContainer.setVisibility(View.VISIBLE);
+                holder.totalPrice.setText("Total : Rp "+chat.getProductList().get(0).getPrice());
+                holder.cartList.setAdapter(new CartListViewAdapter(context,chat.getProductList()));
+                LinearLayoutManager llm = new LinearLayoutManager(context);
+                llm.setOrientation(LinearLayoutManager.VERTICAL);
+                holder.cartList.setLayoutManager(llm);
+                holder.checkOutButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        chatEntityList.add(new ChatEntity(ChatEntity.PAYMENT_METHOD, null, null, null));
+                        notifyDataSetChanged();
+
+                    }
+                });
+                break;
+            case ChatEntity.PAYMENT_METHOD:
+                holder.paymentMethodContainer.setVisibility(View.VISIBLE);
                 break;
             case ChatEntity.LIST_OF_PRODUCT:
                 holder.productListContainer.setVisibility(View.VISIBLE);
@@ -101,6 +115,7 @@ public class RecyclerChatAdapter extends RecyclerView.Adapter<RecyclerChatAdapte
 
         protected LinearLayout productListContainer;
         protected ListView productList;
+        protected TextView totalPrice;
         protected Button seeMoreButtonProduct;
 
         protected LinearLayout cartContainer;
@@ -131,6 +146,7 @@ public class RecyclerChatAdapter extends RecyclerView.Adapter<RecyclerChatAdapte
 
             productListContainer = (LinearLayout) view.findViewById(R.id.list_of_product_container);
             productList = (ListView) view.findViewById(R.id.list_of_product);
+            totalPrice = (TextView) view.findViewById(R.id.total_price_cart);
             seeMoreButtonProduct = (Button) view.findViewById(R.id.see_more_button_product);
 
             cartContainer = (LinearLayout) view.findViewById(R.id.cart_container);

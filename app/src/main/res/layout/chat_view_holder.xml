@@ -84,10 +84,9 @@
         android:visibility="gone">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="380dp"
             android:layout_height="wrap_content"
             android:background="@drawable/chat_bubble_in"
-            android:maxWidth="300dp"
             android:orientation="vertical"
             android:padding="16dp"
             android:paddingStart="30dp"
@@ -95,10 +94,11 @@
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/item_list_cart"
-                android:layout_width="match_parent"
+                android:layout_width="350dp"
                 android:layout_height="wrap_content" />
 
             <TextView
+                android:id="@+id/total_price_cart"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"

@@ -44,6 +44,7 @@ public class ChatEntity {
                 break;
             case CART:
                 type = CART;
+                productList.addAll(products);
                 break;
             case PAYMENT_METHOD:
                 type = PAYMENT_METHOD;
