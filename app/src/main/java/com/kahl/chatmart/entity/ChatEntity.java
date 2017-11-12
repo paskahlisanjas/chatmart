@@ -40,6 +40,7 @@ public class ChatEntity {
                 break;
             case LIST_OF_PRODUCT:
                 type = LIST_OF_PRODUCT;
+                productList.addAll(products);
                 break;
             case CART:
                 type = CART;

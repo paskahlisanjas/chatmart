@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ListAdapter;
 import android.widget.Toast;
 
 import com.kahl.chatmart.adapter.RecyclerChatAdapter;
@@ -24,22 +25,25 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView chatList;
     EditText editTextInput;
     FloatingActionButton fabSend;
+    List<Product> products = new ArrayList<>();
 
     List<ChatEntity> chats = new ArrayList<>();
 
     RecyclerChatAdapter chatAdapter;
-
     private final String WRONG_MESSAGE = "Tolong bantu kami memahami permintaan Anda dengan memperjelas permintaan Anda.";
     private final String HALO = "Halo";
     private final String OPENING_RESP = "Ada yang dapat kami bantu?";
     private final String SHIPMENT = "Barang dikirim";
     private final String CATEGORY = "Tampilkan kategori";
+    private final String CARI = "Cari";
+    private final String CARI_INDOMIE = "Cari Indomie";
+    private final String ITEM_NOT_FOUND = "Barang tidak ditemukan";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        products.add(new Product(getResources().getDrawable(R.drawable.indomie), "Indomie Goreng", "Mie instan enak","100.000"));
         bindObject();
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
@@ -74,9 +78,16 @@ public class MainActivity extends AppCompatActivity {
             chats.add(new ChatEntity(ChatEntity.LIST_OF_CATEGORY, null, null, categories));
         } else if (input.equals(SHIPMENT)) {
             chats.add(addIntoChats(SHIPMENT, false));
-            List<Product> products = new ArrayList<>();
-            products.add(new Product(getResources().getDrawable(R.drawable.indomie), "Indomie Goreng", ""));
+
             chats.add(new ChatEntity(ChatEntity.LIST_OF_SHIPMENT, null, products, null));
+        } else if ((input.length()>5)&&(input.substring(0,4).equals(CARI))) {
+            if(input.equals(CARI_INDOMIE)){
+                chats.add(addIntoChats(CARI_INDOMIE, false));
+                chats.add(new ChatEntity(ChatEntity.LIST_OF_PRODUCT, null, products, null));
+            } else{
+                chats.add(addIntoChats(input, false));
+                chats.add(addIntoChats(ITEM_NOT_FOUND, true));
+            }
         } else {
             chats.add(addIntoChats(input, false));
             chats.add(addIntoChats(WRONG_MESSAGE, true));
@@ -87,7 +98,6 @@ public class MainActivity extends AppCompatActivity {
         int totalItem = chatList.getAdapter().getItemCount();
         chatList.smoothScrollToPosition(totalItem - 1);
     }
-
 
     private ChatEntity addIntoChats(String text, boolean in) {
         return in ? new ChatEntity(ChatEntity.DEFAULT_IN, text, null, null)

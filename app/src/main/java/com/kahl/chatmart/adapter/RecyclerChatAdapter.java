@@ -15,7 +15,10 @@ import android.widget.Toast;
 import com.kahl.chatmart.R;
 import com.kahl.chatmart.entity.ChatEntity;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Paskahlis Anjas Prabowo on 10/11/2017.
@@ -76,6 +79,10 @@ public class RecyclerChatAdapter extends RecyclerView.Adapter<RecyclerChatAdapte
                 break;
             case ChatEntity.CART:
                 holder.cartContainer.setVisibility(View.VISIBLE);
+                break;
+            case ChatEntity.LIST_OF_PRODUCT:
+                holder.productListContainer.setVisibility(View.VISIBLE);
+                holder.productList.setAdapter(new ProductListViewAdapter(context, chat.getProductList()));
                 break;
         }
     }

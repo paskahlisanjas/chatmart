@@ -61,12 +61,10 @@
             android:padding="16dp"
             android:paddingStart="30dp"
             android:textColor="#FFF">
-
-            <ListView
-                android:id="@+id/list_of_product"
-                android:layout_width="300dp"
-                android:layout_height="130dp" />
-
+                <ListView
+                    android:id="@+id/list_of_product"
+                    android:layout_width="300dp"
+                    android:layout_height="130dp" />
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
