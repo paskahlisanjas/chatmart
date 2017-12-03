@@ -2,21 +2,31 @@ package com.kahl.chatmart;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.graphics.drawable.Drawable;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 
+import com.kahl.chatmart.adapter.NavigationListAdapter;
 import com.kahl.chatmart.adapter.RecyclerChatAdapter;
 import com.kahl.chatmart.entity.Category;
 import com.kahl.chatmart.entity.ChatEntity;
@@ -36,26 +46,73 @@ public class MainActivity extends AppCompatActivity {
     private static RecyclerChatAdapter chatAdapter;
 
     private final String WRONG_MESSAGE = "Tolong bantu kami memahami permintaan Anda dengan memperjelas permintaan Anda.";
-    private final String HALO = "Halo";
+    private final String HALO = "halo";
     private final String OPENING_RESP = "Ada yang dapat kami bantu?";
-    private final String SHIPMENT = "Barang dikirim";
-    private final String CATEGORY = "Tampilkan kategori";
-    private final String CARI = "Cari";
-    private final String CARI_INDOMIE = "Cari Indomie";
+    private final String SHIPMENT = "barang dikirim";
+    private final String CATEGORY = "tampilkan kategori";
+    private final String CARI = "cari";
+    private final String CARI_INDOMIE = "cari indomie";
     private final String ITEM_NOT_FOUND = "Barang tidak ditemukan";
-    private final String KERANJANG = "Lihat keranjang";
+    private final String KERANJANG = "lihat keranjang";
+
+    private DrawerLayout drawerLayout;
+    private ActionBarDrawerToggle drawerToggle;
+    private ListView drawerList;
+
+    private boolean backPressedTwice = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         setContentView(R.layout.activity_main);
+
+        setupNavigationDrawer();
+
         bindObject();
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
     }
 
+    private void setupNavigationDrawer() {
+        drawerLayout = (DrawerLayout) findViewById(R.id.navigation_drawer_layout);
+        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+            }
+        };
+        drawerLayout.setDrawerListener(drawerToggle);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        drawerToggle.syncState();
+
+        drawerList = (ListView) findViewById(R.id.drawer_list);
+        String[] itemText = {"Pengaturan"};
+        Drawable[] itemIcon = {getResources().getDrawable(R.drawable.settings_icon)};
+        drawerList.setAdapter(new NavigationListAdapter(itemText, itemIcon, this));
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        drawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        drawerToggle.onConfigurationChanged(newConfig);
+    }
+
     private void runLogic() {
-        String input = editTextInput.getText().toString();
+        String input = editTextInput.getText().toString().toLowerCase();
 
         if (input.isEmpty()) {
             return;
@@ -75,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
             chats.add(addIntoChats(CATEGORY, false));
             List<Category> categories = new ArrayList<>();
             Category health = new Category("Kesehatan", getResources().getDrawable(R.drawable.ic_accessibility_white_24px),
-                    "sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa .");
+                    "sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa.");
             Category electrocnic = new Category("Gadget", getResources().getDrawable(R.drawable.ic_phone_android_white_24px),
                     "Nemo enim ipsam voluptatem quia voluptas sit aspernatur.");
             categories.add(health);
@@ -84,22 +141,22 @@ public class MainActivity extends AppCompatActivity {
         } else if (input.equals(SHIPMENT)) {
             chats.add(addIntoChats(SHIPMENT, false));
             chats.add(new ChatEntity(ChatEntity.LIST_OF_SHIPMENT, null, products, null));
-        } else if ((input.length()>5)&&(input.substring(0,4).equals(CARI))) {
-            if(input.equals(CARI_INDOMIE)){
-                products.add(new Product(getResources().getDrawable(R.drawable.indomie), "Indomie Goreng", "Mie instan enak","100.000"));
-                products.add(new Product(getResources().getDrawable(R.drawable.indomie), "Indomie Goreng Direbus", "Mie instan lezat","120.000"));
+        } else if ((input.length() > 5) && (input.substring(0, 4).equals(CARI))) {
+            if (input.equals(CARI_INDOMIE)) {
+                products.add(new Product(getResources().getDrawable(R.drawable.indomie), "Indomie Goreng", "Mie instan enak", "100.000"));
+                products.add(new Product(getResources().getDrawable(R.drawable.indomie), "Indomie Goreng Direbus", "Mie instan lezat", "120.000"));
                 chats.add(addIntoChats(CARI_INDOMIE, false));
                 chats.add(new ChatEntity(ChatEntity.LIST_OF_PRODUCT, null, products, null));
-            } else{
+            } else {
                 chats.add(addIntoChats(input, false));
                 chats.add(addIntoChats(ITEM_NOT_FOUND, true));
             }
-        } else if (input.equals(KERANJANG)){
+        } else if (input.equals(KERANJANG)) {
             chats.add(addIntoChats(KERANJANG, false));
             chats.add(new ChatEntity(ChatEntity.CART, null, products, null));
-        }else {
-                chats.add(addIntoChats(input, false));
-                chats.add(addIntoChats(WRONG_MESSAGE, true));
+        } else {
+            chats.add(addIntoChats(input, false));
+            chats.add(addIntoChats(WRONG_MESSAGE, true));
         }
 
         chatAdapter.notifyDataSetChanged();
@@ -131,7 +188,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-    
+
     public static void addToChatList(ChatEntity chatEntity) {
         chats.add(chatEntity);
         chatAdapter.notifyDataSetChanged();
@@ -152,7 +209,35 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, HelpActivity.class);
             startActivity(intent);
             return true;
+        } else if (item.getItemId() == android.R.id.home) {
+            if (drawerLayout.isDrawerOpen(GravityCompat.START))
+                drawerLayout.closeDrawer(GravityCompat.START);
+            else
+                drawerLayout.openDrawer(GravityCompat.START);
+            return true;
         }
         return false;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            if (backPressedTwice) {
+                finish();
+                System.exit(0);
+            } else {
+                backPressedTwice = true;
+                Toast.makeText(this, "Sentuh sekali lagi untuk keluar", Toast.LENGTH_SHORT).show();
+                new Handler().postDelayed(
+                        new Runnable() {
+                            @Override
+                            public void run() {
+                                backPressedTwice = false;
+                            }
+                        }, 3000);
+            }
+        }
     }
 }
